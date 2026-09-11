@@ -41,8 +41,8 @@ function getHtmlWithDefaultKey() {
 }
 
 // Recebe o HTML atual do navegador para gerar a imagem exatamente como o usuário está vendo.
-app.use('/download-image', express.text({ type: ['text/html', 'text/plain'], limit: '4mb' }));
-app.use('/download-image', express.urlencoded({ extended: false, limit: '4mb' }));
+app.use('/download-image', express.text({ type: ['text/html', 'text/plain'], limit: '2mb' }));
+app.use('/download-image', express.urlencoded({ extended: false, limit: '2mb' }));
 
 app.get('/', (req, res) => {
   res.set('Cache-Control', 'no-store');
