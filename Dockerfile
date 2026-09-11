@@ -53,7 +53,8 @@ COPY package*.json ./
 
 RUN npm ci
 
-COPY server.js LastfmCard.html ./
+COPY server.js LastfmCard.html fonts.css ./
+COPY fonts/ ./fonts/
 
 EXPOSE 3000
 
