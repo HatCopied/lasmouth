@@ -167,15 +167,21 @@ app.post('/download-image', async (req, res) => {
       }));
     }, PER_IMAGE_TIMEOUT_MS);
 await page.evaluate(() => {
-  document.body.classList.add('lm-state--revealed');
-  document.body.classList.remove('lm-state--loading');
-  document.body.classList.remove('lm-animate-stagger');
+  const card = document.querySelector('.card-container');
 
-  document.querySelectorAll('.stat-item').forEach(el => {
-    el.style.animation = 'none';
-    el.style.opacity = '1';
-    el.style.transform = 'none';
-  });
+  if (card) {
+    card.classList.add('lm-animate-stagger');
+  }
+});
+
+await new Promise(resolve => setTimeout(resolve, 1600));
+
+await page.evaluate(() => {
+  const card = document.querySelector('.card-container');
+
+  if (card) {
+    card.classList.remove('lm-animate-stagger');
+  }
 });
     const card = await page.$('.card-container');
     if (!card) return res.status(400).send('Card não encontrado.');
