@@ -166,7 +166,23 @@ app.post('/download-image', async (req, res) => {
         });
       }));
     }, PER_IMAGE_TIMEOUT_MS);
+await page.evaluate(() => {
+  document.querySelectorAll('*').forEach(el => {
+    const style = getComputedStyle(el);
 
+    if (style.textShadow !== 'none') {
+      el.style.textShadow = style.textShadow;
+    }
+
+    if (style.boxShadow !== 'none') {
+      el.style.boxShadow = style.boxShadow;
+    }
+
+    if (style.filter !== 'none') {
+      el.style.filter = style.filter;
+    }
+  });
+});
     const card = await page.$('.card-container');
     if (!card) return res.status(400).send('Card não encontrado.');
 
