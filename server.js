@@ -142,7 +142,7 @@ app.post('/download-image', async (req, res) => {
 
     // O navegador cliente envia uma cópia do DOM já preenchida.
     // Os scripts são removidos para não disparar uma nova busca no Last.fm.
-    const safeHtml = req.body;
+    const safeHtml = req.body.replace(/<script[\s\S]*?<\/script>/gi, '');
     await page.setContent(safeHtml, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
     await page.evaluate(async (perImageTimeout) => {
