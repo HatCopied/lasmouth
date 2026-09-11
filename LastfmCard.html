@@ -3444,63 +3444,70 @@
 
       // Envia uma cópia do card atual para o servidor e recebe um PNG gerado pelo Puppeteer.
       // Isso evita as limitações do html2canvas com imagens externas, fontes e alguns layouts CSS.
-      async function downloadCard() {
-        if (!els.downloadBtn || !els.cardContainer) return;
+     async function downloadCard() {
+  if (!els.downloadBtn || !els.cardContainer) return;
 
-        var originalText = els.downloadBtn.textContent;
-        els.downloadBtn.disabled = true;
-        els.downloadBtn.textContent = "Gerando imagem…";
-        isDownloadInProgress = true;
+  var originalText = els.downloadBtn.textContent;
+  els.downloadBtn.disabled = true;
+  els.downloadBtn.textContent = "Gerando imagem…";
+  isDownloadInProgress = true;
 
-        try {
-          var clone = document.documentElement.cloneNode(true);
+  try {
+    var clone = document.documentElement.cloneNode(true);
 
-          // Não precisamos enviar o painel lateral nem scripts para o servidor.
-          clone.querySelectorAll("script").forEach(function (el) { el.remove(); });
-          clone.querySelectorAll(".search-panel").forEach(function (el) { el.remove(); });
-          clone.querySelectorAll("#download-card-btn").forEach(function (el) { el.remove(); });
+    clone.querySelectorAll("script").forEach(function (el) { el.remove(); });
+    clone.querySelectorAll(".search-panel").forEach(function (el) { el.remove(); });
+    clone.querySelectorAll("#download-card-btn").forEach(function (el) { el.remove(); });
 
-          // Deixa o card com cantos quadrados SÓ na imagem baixada.
-          // Isso evita que sobrem bordas sem cor (cantos "vazados") no PNG
-          // gerado pelo Puppeteer, sem alterar o visual arredondado na tela.
-          clone.querySelectorAll(".card-container").forEach(function (el) {
-            el.style.borderRadius = "0";
-          });
+    clone.querySelectorAll(".card-container").forEach(function (el) {
+      el.style.borderRadius = "0";
+    });
 
-          var response = await fetch("/download-image", {
-            method: "POST",
-            headers: { "Content-Type": "text/html; charset=UTF-8" },
-            body: "<!doctype html>" + clone.outerHTML
-          });
+    var html = "<!doctype html>" + clone.outerHTML;
 
-          if (!response.ok) {
-            var errorText = await response.text();
-            throw new Error(errorText || "O servidor não conseguiu gerar a imagem.");
-          }
+    // O download antigo era feito por fetch() + Blob + <a>. Como o servidor
+    // demora para renderizar o PNG, o clique final acontecia depois que a
+    // ativação do usuário já tinha expirado e alguns navegadores bloqueavam
+    // o download. Mantemos uma única requisição ao servidor, mas fazemos a
+    // navegação para o endpoint por um iframe/form.
+    //
+    // O servidor recebe o HTML como text/plain via fetch no endpoint atual,
+    // então primeiro abrimos uma aba controlada pelo gesto do usuário. A
+    // requisição continua sendo POST e a resposta possui Content-Disposition:
+    // attachment, portanto o navegador trata o PNG como download.
+    var downloadWindow = window.open("about:blank", "lastmonth-download");
+    if (!downloadWindow) {
+      throw new Error("O navegador bloqueou a janela de download. Permita pop-ups para este site.");
+    }
 
-          var blob = await response.blob();
-          var safeName = (els.username.textContent || "last-month")
-            .trim()
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/(^-|-$)/g, "");
+    var form = downloadWindow.document.createElement("form");
+    form.method = "POST";
+    form.action = "/download-image";
+    form.style.display = "none";
 
-          var link = document.createElement("a");
-          link.download = (safeName || "last-month") + "-rewind.png";
-          link.href = URL.createObjectURL(blob);
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          setTimeout(function () { URL.revokeObjectURL(link.href); }, 4000);
-          setStatus("Imagem baixada com sucesso!", false);
-        } catch (err) {
-          setStatus("Não foi possível baixar a imagem: " + err.message, true);
-        } finally {
-          isDownloadInProgress = false;
-          els.downloadBtn.disabled = false;
-          els.downloadBtn.textContent = originalText;
-        }
-      }
+    var field = downloadWindow.document.createElement("textarea");
+    field.name = "html";
+    field.value = html;
+    form.appendChild(field);
+    downloadWindow.document.body.appendChild(form);
+
+    // O server.js precisa aceitar application/x-www-form-urlencoded além de
+    // text/html para esta variante de download.
+    form.submit();
+
+    setTimeout(function () {
+      try { downloadWindow.close(); } catch (e) {}
+    }, 5000);
+
+    setStatus("Imagem enviada para download.", false);
+  } catch (err) {
+    setStatus("Não foi possível baixar a imagem: " + err.message, true);
+  } finally {
+    isDownloadInProgress = false;
+    els.downloadBtn.disabled = false;
+    els.downloadBtn.textContent = originalText;
+  }
+}
 
       // Estado inicial: seletor de mês preenchido com os meses do ano atual
       // (mês corrente já selecionado) + card em modo "aguardando". A tela
