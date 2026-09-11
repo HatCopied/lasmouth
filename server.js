@@ -167,20 +167,14 @@ app.post('/download-image', async (req, res) => {
       }));
     }, PER_IMAGE_TIMEOUT_MS);
 await page.evaluate(() => {
-  document.querySelectorAll('*').forEach(el => {
-    const style = getComputedStyle(el);
+  document.body.classList.add('lm-state--revealed');
+  document.body.classList.remove('lm-state--loading');
+  document.body.classList.remove('lm-animate-stagger');
 
-    if (style.textShadow !== 'none') {
-      el.style.textShadow = style.textShadow;
-    }
-
-    if (style.boxShadow !== 'none') {
-      el.style.boxShadow = style.boxShadow;
-    }
-
-    if (style.filter !== 'none') {
-      el.style.filter = style.filter;
-    }
+  document.querySelectorAll('.stat-item').forEach(el => {
+    el.style.animation = 'none';
+    el.style.opacity = '1';
+    el.style.transform = 'none';
   });
 });
     const card = await page.$('.card-container');
