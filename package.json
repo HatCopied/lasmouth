@@ -1,0 +1,14 @@
+{
+  "name": "lastmonth-server",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Servidor Express para servir o Last.Month e gerar downloads do card em PNG",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "puppeteer": "^24.15.0"
+  }
+}
