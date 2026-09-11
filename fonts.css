@@ -1,0 +1,25 @@
+/*
+  fonts.css
+  ---------
+  Um @font-face só, apontando direto para a fonte VARIÁVEL (SegUIVar.ttf).
+
+  Por que a variável e não os arquivos estáticos (segoeuib.ttf, seguibl.ttf...)?
+  Porque o site pede pesos como 800 (.brand-rewind-date, "Setembro") que não
+  existem como arquivo estático nenhum -- só 300/350/400/600/700/900 existem.
+  Sem um 800 exato, o navegador aproxima pro mais próximo (geralmente 900),
+  o que muda a largura/peso da letra e é exatamente a diferença que você via
+  entre "Setembro" e as abas "ARTISTAS/FAIXAS EM DESTAQUE" no Render vs local.
+
+  Com font-weight: 100 900 aqui, o Chromium trata o arquivo como fonte
+  variável de verdade e INTERPOLA o peso exato pedido em cada elemento
+  (400, 600, 700, 800, 900...), igual o Windows faz localmente -- sem
+  depender do fontconfig do sistema pra nada.
+*/
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("fonts/SegUIVar.ttf");
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-display: block;
+}
