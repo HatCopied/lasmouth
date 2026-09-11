@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: lastmonth-server
-    runtime: docker
-    healthCheckPath: /
-    envVars:
-      - key: LASTFM_API_KEY
-        sync: false
