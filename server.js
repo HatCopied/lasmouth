@@ -137,9 +137,14 @@ app.get('/artist-images', async (req, res) => {
 
 app.post('/download-image', async (req, res) => {
   const incomingHtml = typeof req.body === 'string' ? req.body : (req.body && req.body.html);
-  if (!incomingHtml || typeof incomingHtml !== 'string') {
-    return res.status(400).send('HTML do card não recebido.');
-  }
+  const submittedHtml =
+  typeof req.body === 'string'
+    ? req.body
+    : (req.body && typeof req.body.html === 'string' ? req.body.html : '');
+
+if (!submittedHtml) {
+  return res.status(400).send('HTML do card não recebido.');
+}
 
   // Tempo máximo (ms) que esperamos por CADA imagem do card (ex: fotos
   // escolhidas na galeria do Last.fm, que precisam ser baixadas de novo
@@ -178,7 +183,7 @@ app.post('/download-image', async (req, res) => {
 
     // O navegador cliente envia uma cópia do DOM já preenchida.
     // Os scripts são removidos para não disparar uma nova busca no Last.fm.
-    const safeHtml = incomingHtml.replace(/<script[\s\S]*?<\/script>/gi, '');
+    const safeHtml = submittedHtml.replace(/<script[\s\S]*?<\/script>/gi, '');
     await page.setContent(safeHtml, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
     await page.evaluate(async (perImageTimeout) => {
