@@ -3465,39 +3465,35 @@
 
     var html = "<!doctype html>" + clone.outerHTML;
 
-    // O download antigo era feito por fetch() + Blob + <a>. Como o servidor
-    // demora para renderizar o PNG, o clique final acontecia depois que a
-    // ativação do usuário já tinha expirado e alguns navegadores bloqueavam
-    // o download. Mantemos uma única requisição ao servidor, mas fazemos a
-    // navegação para o endpoint por um iframe/form.
-    //
-    // O servidor recebe o HTML como text/plain via fetch no endpoint atual,
-    // então primeiro abrimos uma aba controlada pelo gesto do usuário. A
-    // requisição continua sendo POST e a resposta possui Content-Disposition:
-    // attachment, portanto o navegador trata o PNG como download.
-    var downloadWindow = window.open("about:blank", "lastmonth-download");
-    if (!downloadWindow) {
-      throw new Error("O navegador bloqueou a janela de download. Permita pop-ups para este site.");
+    // Envia o POST para um iframe invisível. Assim a resposta do servidor
+    // continua sendo um download HTTP normal (Content-Disposition: attachment),
+    // mas sem abrir uma aba/janela temporária na tela.
+    var iframeName = "lastmonth-download-frame";
+    var iframe = document.getElementById(iframeName);
+
+    if (!iframe) {
+      iframe = document.createElement("iframe");
+      iframe.id = iframeName;
+      iframe.name = iframeName;
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
     }
 
-    var form = downloadWindow.document.createElement("form");
+    var form = document.createElement("form");
     form.method = "POST";
     form.action = "/download-image";
+    form.target = iframeName;
     form.style.display = "none";
 
-    var field = downloadWindow.document.createElement("textarea");
+    var field = document.createElement("textarea");
     field.name = "html";
     field.value = html;
     form.appendChild(field);
-    downloadWindow.document.body.appendChild(form);
+    document.body.appendChild(form);
 
-    // O server.js precisa aceitar application/x-www-form-urlencoded além de
-    // text/html para esta variante de download.
+    // O server.js corrigido já aceita application/x-www-form-urlencoded.
     form.submit();
-
-    setTimeout(function () {
-      try { downloadWindow.close(); } catch (e) {}
-    }, 5000);
+    form.remove();
 
     setStatus("Imagem enviada para download.", false);
   } catch (err) {
