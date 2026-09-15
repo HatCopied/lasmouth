@@ -9,6 +9,7 @@ O **Hatcharts** transforma suas estatísticas mensais do Last.fm em um card pers
     <strong>🎧 Acesse o Hatcharts</strong>
   </a>
 </p>
+> **Importante:** Interface otimizada para computador e celular, proporcionando uma experiência confortável em qualquer tela.
 
 ### Como usar?
 
@@ -20,7 +21,7 @@ O **Hatcharts** transforma suas estatísticas mensais do Last.fm em um card pers
 > Ainda penso em criar diversos outros sites com base no Last.fm. Vejo muitas ferramentas por aí e sinto que unificar todas elas em um só lugar seria de enorme ajuda.
 
 <p align="center">
-  <img src="Imagens/image.png" alt="Hatcharts">
+  <img src="Imagens/image3.png" alt="Hatcharts">
 </p>
 
 Desenvolvido por **HatCopied**.
