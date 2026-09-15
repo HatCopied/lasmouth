@@ -4,7 +4,7 @@
 
 O **Hatcharts** transforma suas estatísticas mensais do Last.fm em um card personalizado, permitindo escolher cores, imagens, artistas e outros detalhes visuais.
 
-🔗 <p align="center">
+ <p align="center">
   <a href="https://hatcharts.onrender.com/">
     <strong>→ ACESSE O HATCHARTS ←</strong>
   </a>
