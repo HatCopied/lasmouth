@@ -9,7 +9,7 @@ O **Hatcharts** transforma suas estatísticas mensais do Last.fm em um card pers
     <img src="https://img.shields.io/badge/🎧%20Acessar%20Hatcharts-4D7C0F?style=for-the-badge" alt="Acessar Hatcharts">
   </a>
   <a href="https://github.com/HatCopied/lastmouth">
-    <img src="https://img.shields.io/badge/⭐%20GitHub-121212?style=for-the-badge" alt="GitHub">
+    <img src="https://img.shields.io/badge/%20GitHub-121212?style=for-the-badge" alt="GitHub">
   </a>
 </p>
 
