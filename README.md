@@ -9,7 +9,7 @@ O **Hatcharts** transforma suas estatísticas mensais do Last.fm em um card pers
     <strong>🎧 Acesse o Hatcharts</strong>
   </a>
 </p>
-> **Importante:** Interface otimizada para computador e celular, proporcionando uma experiência confortável em qualquer tela.
+> Interface otimizada para computador e celular, proporcionando uma experiência confortável em qualquer tela.
 
 ### Como usar?
 
