@@ -14,15 +14,23 @@ O **Hatcharts** transforma suas estatísticas mensais do Last.fm em um card pers
 </p>
 
 <p align="center">
-  <a href="https://hatcharts.onrender.com/">
-    <img src="https://img.shields.io/badge/🎧%20Acessar%20Hatcharts-4D7C0F?style=for-the-badge" alt="Acessar Hatcharts">
-  </a>
-  &nbsp;
-  <strong>│</strong>
-  &nbsp;
-  <a href="https://github.com/HatCopied/lastmouth">
-    <img src="https://img.shields.io/badge/⭐%20GitHub-121212?style=for-the-badge" alt="GitHub">
-  </a>
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://hatcharts.onrender.com/">
+          <img src="https://img.shields.io/badge/🎧%20Acessar%20Hatcharts-4D7C0F?style=for-the-badge" alt="Acessar Hatcharts">
+        </a>
+      </td>
+      <td align="center" width="25">
+        <img src="https://img.shields.io/badge/%7C-cccccc?style=flat-square" alt="">
+      </td>
+      <td align="center">
+        <a href="https://github.com/HatCopied/lastmouth">
+          <img src="https://img.shields.io/badge/⭐%20GitHub-121212?style=for-the-badge" alt="GitHub">
+        </a>
+      </td>
+    </tr>
+  </table>
 </p>
 
 > **Importante:** Interface própria para computador e celular.
